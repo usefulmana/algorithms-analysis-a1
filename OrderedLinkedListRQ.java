@@ -11,18 +11,28 @@ import java.lang.String;
  */
 public class OrderedLinkedListRQ implements Runqueue {
 
+    protected Node headNode;
+    protected int listLength;
+    
     /**
      * Constructs empty linked list
      */
     public OrderedLinkedListRQ() {
-        // Implement me
-
+        headNode = null;
+        listLength = 0;
     }  // end of OrderedLinkedList()
 
 
     @Override
     public void enqueue(String procLabel, int vt) {
-        // Implement me
+        if (headNode == null){
+            headNode = new Node(new Proc(procLabel, vt));
+        }
+        else {
+            
+
+
+        }
 
     } // end of enqueue()
 
@@ -72,5 +82,31 @@ public class OrderedLinkedListRQ implements Runqueue {
         //Implement me
 
     } // end of printAllProcess()
+
+    private class Node {
+        protected Proc process;
+        protected Node nextNode;
+
+        public Node(Proc proc){
+            process = proc;
+            nextNode = null;
+        }
+
+        public int getVt() {
+            return process.getVt();
+        }
+
+        public String getProcLabel() {
+            return process.getProcLabel();
+        }
+
+        public Proc getProc() {
+            return process;
+        }
+
+        public void setNodeValue(Node node){
+            nextNode = node;
+        }
+    }
 
 } // end of class OrderedLinkedListRQ

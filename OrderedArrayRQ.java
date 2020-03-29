@@ -12,6 +12,9 @@ import java.lang.String;
  */
 public class OrderedArrayRQ implements Runqueue {
 
+    private int length = 0;
+    
+
     /**
      * Constructs empty queue
      */
@@ -73,5 +76,10 @@ public class OrderedArrayRQ implements Runqueue {
         //Implement me
 
     } // end of printAllProcesses()
+
+    public class Node{
+        protected int index;
+
+    }
 
 } // end of class OrderedArrayRQ
