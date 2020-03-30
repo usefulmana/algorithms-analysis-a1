@@ -33,6 +33,7 @@ public class OrderedArrayRQ implements Runqueue {
     }
 
     private void doubleCapacity() {
+        // private method used for increasing array capacity
         capacity = 2 * capacity;
         Proc[] newProcesses = new Proc[capacity];
         System.arraycopy(processes, 0, newProcesses, 0, processes.length);
@@ -42,8 +43,8 @@ public class OrderedArrayRQ implements Runqueue {
     private void printAll(Proc[] arr){
         // Private method used for debug purposes
         for (int j = 0; j < arr.length; j++) {
-            if (processes[j] != null) {
-                System.out.print(processes[j].getProcLabel() + " ");
+            if (arr[j] != null) {
+                System.out.print(arr[j].getProcLabel() + " ");
             }
             else{
                 System.out.print("null ");

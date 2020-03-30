@@ -11,76 +11,176 @@ import java.lang.String;
  */
 public class OrderedLinkedListRQ implements Runqueue {
 
-    protected Node headNode;
-    protected int listLength;
+    private Node first;
+    protected int length;
     
     /**
      * Constructs empty linked list
      */
     public OrderedLinkedListRQ() {
-        headNode = null;
-        listLength = 0;
+        first = null;
     }  // end of OrderedLinkedList()
 
+    private int size(){
+        int sum = 0;
+        Node current = first;
+
+        while (current != null){
+           sum += 1;
+           current = current.nextNode;
+        }
+        return sum;
+    }
 
     @Override
     public void enqueue(String procLabel, int vt) {
-        if (headNode == null){
-            headNode = new Node(new Proc(procLabel, vt));
+        Node newNode = new Node(new Proc(procLabel, vt));
+        Node previous = null;
+        Node current = first;
+
+        while (current != null && vt >= current.getVt()){
+            previous = current;
+            current = current.getNextNode();
         }
-        else {
-            
 
-
+        if (previous == null){
+            newNode.nextNode = first;
+            first = newNode;
         }
 
+        else{
+            previous.nextNode = newNode;
+            newNode.nextNode = current;
+        }
+        length++;
     } // end of enqueue()
 
 
     @Override
     public String dequeue() {
-        // Implement me
+        if (first == null) return null;
 
-        return ""; // placeholder, modify this
+        String result = first.getProcLabel();
+        first = first.getNextNode();
+        length--;
+        return result;// placeholder, modify this
     } // end of dequeue()
 
 
     @Override
     public boolean findProcess(String procLabel) {
-        // Implement me
+        
+        Node temp = findNodeByProcLabel(procLabel);
+
+        if (temp != null) return true;
 
         return false; // placeholder, modify this
     } // end of findProcess()
 
 
+    private Node findNodeByProcLabel(String procLabel){
+        Node current = first;
+
+        while (current != null){
+           if (current.getProcLabel().equals(procLabel)) return current;
+           current = current.nextNode;
+        }
+        return null;
+    }
+
     @Override
     public boolean removeProcess(String procLabel) {
-        // Implement me
+        Node target = findNodeByProcLabel(procLabel);
 
-        return false; // placeholder, modify this
+        if (target == null){
+            return false;
+        }
+        else {
+            int index = findFirstIndexOfItem(procLabel);
+            Node previous = findProcByIndex(index - 1);
+            Node next = findProcByIndex(index + 1);
+            target.nextNode = null;
+    
+            if (next == null){
+                previous.nextNode = null;
+                return true;
+            }
+            else if (next != null) {
+                previous.nextNode = next;
+                return true;
+            }
+            return false;
+        }
     } // End of removeProcess()
 
+    private int findFirstIndexOfItem(String procLabel){
+        int sum = -1;
+        Node current = first;
+        while (current != null){
+            sum += 1;
+            if (current.getProcLabel().equals(procLabel)){
+                break;
+            }
+            current = current.nextNode;
+         }
+        return sum;
+    }
+
+    private Node findProcByIndex(int index){
+        int count = 0;
+        Node current = first;
+        while(count < index){
+            current = current.nextNode;
+            count++;
+        }
+        return current;
+    }
 
     @Override
     public int precedingProcessTime(String procLabel) {
-        // Implement me
-
+        Node current = first;
+        int sum = 0;
+        Node target = findNodeByProcLabel(procLabel);
+        int targetIndex = findFirstIndexOfItem(procLabel);
+        if (target != null){
+            for (int i = 0; i < targetIndex; i++) {
+                sum += current.getVt();
+                current = current.nextNode;
+            }
+    
+            return sum;
+        }
         return -1; // placeholder, modify this
     } // end of precedingProcessTime()
 
-
     @Override
     public int succeedingProcessTime(String procLabel) {
-        // Implement me
-
+        Node current = first;
+        int sum = 0;
+        Node target = findNodeByProcLabel(procLabel);
+        
+        if (target != null){
+            while(current != null){
+                sum += current.getVt();
+                current = current.nextNode;
+            }
+    
+            int finalSum = sum - target.getVt() - precedingProcessTime(procLabel);
+    
+            return finalSum;
+        }
         return -1; // placeholder, modify this
     } // end of precedingProcessTime()
 
 
     @Override
     public void printAllProcesses(PrintWriter os) {
-        //Implement me
-
+        Node current = first;
+        while (current != null){
+            os.print(current.getProcLabel() + " ");
+            current = current.nextNode;
+        }
+        os.println("");
     } // end of printAllProcess()
 
     private class Node {
@@ -104,8 +204,12 @@ public class OrderedLinkedListRQ implements Runqueue {
             return process;
         }
 
-        public void setNodeValue(Node node){
+        public void setNextNodeValue(Node node){
             nextNode = node;
+        }
+
+        public Node getNextNode(){
+            return this.nextNode;
         }
     }
 
