@@ -2,7 +2,7 @@ import java.io.PrintWriter;
 import java.lang.String;
 
 public class OrderedArrayRQ implements Runqueue {
-    private static Proc[] processes;
+    private Proc[] processes;
     private int totalElements;
     private int capacity;
 
