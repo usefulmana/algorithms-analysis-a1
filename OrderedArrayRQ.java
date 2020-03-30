@@ -161,13 +161,12 @@ public class OrderedArrayRQ implements Runqueue {
 
     @Override
     public void printAllProcesses(PrintWriter os) {
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < processes.length; i++) {
-            if (processes[i] == null)
-                break;
-            os.print(processes[i].getProcLabel() + " ");
+            if (processes[i] == null) break;
+            stringBuilder.append(processes[i].getProcLabel() + " ");
         }
-        os.println("");
-
+        os.println(stringBuilder.toString().trim());
     } // end of printAllProcesses()
 
 }

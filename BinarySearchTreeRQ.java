@@ -225,7 +225,7 @@ public class BinarySearchTreeRQ implements Runqueue {
 
     @Override
     public void printAllProcesses(PrintWriter os) {
-        os.println(getAllProcesses(root));
+        os.println(getAllProcesses(root).trim());
     } // end of printAllProcess()
 
     // returns all the processes in ascending vt order as a string using recursion

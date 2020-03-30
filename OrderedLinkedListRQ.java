@@ -176,11 +176,12 @@ public class OrderedLinkedListRQ implements Runqueue {
     @Override
     public void printAllProcesses(PrintWriter os) {
         Node current = first;
+        StringBuilder stringBuilder = new StringBuilder();
         while (current != null){
-            os.print(current.getProcLabel() + " ");
+            stringBuilder.append(current.getProcLabel() + " ");
             current = current.nextNode;
         }
-        os.println("");
+        os.println(stringBuilder.toString().trim());
     } // end of printAllProcess()
 
     private class Node {
