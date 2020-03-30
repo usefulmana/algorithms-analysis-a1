@@ -23,6 +23,7 @@ public interface Runqueue {
      * Processes having the same vt follows FIFO order.
      *
      * @return Label of deleted/dequeued process.
+     * @throws Exception
      */
     public abstract String dequeue();
 
