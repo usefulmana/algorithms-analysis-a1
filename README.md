@@ -4,13 +4,9 @@
   
 
 #### To run the code
-- First, create an output folder:
+- Compile the program:
 ```
-mkdir out
-```
-- Next, compile the program:
-```
-javac *.java -d out
+javac *.java
 ``` 
 - Run the program afterwards:
 ```
