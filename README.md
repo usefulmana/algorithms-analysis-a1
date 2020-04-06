@@ -10,7 +10,6 @@ javac *.java
 ``` 
 - Run the program afterwards:
 ```
-cd out
 java RunqueueTester <option> <input_file> <output_file>
 ```
 - There are 3 options: "tree", "array", "linkedlist"
