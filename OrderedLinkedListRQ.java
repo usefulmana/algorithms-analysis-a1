@@ -97,6 +97,10 @@ public class OrderedLinkedListRQ implements Runqueue {
         }
         else {
             int index = findFirstIndexOfItem(procLabel);
+            if (index == 0){
+                dequeue();
+                return true;
+            }
             Node previous = findProcByIndex(index - 1);
             Node next = findProcByIndex(index + 1);
             target.nextNode = null;
@@ -117,10 +121,12 @@ public class OrderedLinkedListRQ implements Runqueue {
         int sum = -1;
         Node current = first;
         while (current != null){
-            sum += 1;
+    
             if (current.getProcLabel().equals(procLabel)){
+                sum += 1;
                 break;
             }
+            sum += 1;
             current = current.nextNode;
          }
         return sum;
