@@ -133,9 +133,8 @@ public class RunqueueTimeTester
     private static void printCommands()
     {
         System.err.println("Commands:");
-        System.err.println("RunequeueTimeTester generate <size> <output file>");
-        System.err.println("RunequeueTimeTester time <implementation> <functions> <input file>");
-        System.err.println("<size> = <0-5000>");
+        System.err.println("RunqueueTimeTester generate <size> <output file>");
+        System.err.println("RunqueueTimeTester time <implementation> <functions> <input file>");
         System.err.println("<functions> = <enqueue | dequeue | print>");
         System.err.println("<implementation> = <array | linkedlist | tree>");
 
