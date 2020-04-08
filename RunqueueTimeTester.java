@@ -53,10 +53,9 @@ public class RunqueueTimeTester
                     before = System.nanoTime();
                     queue.dequeue();
                     break;
-                case "print":
-                    PrintWriter writer = new PrintWriter(System.out, true);
+                case "preceding":
                     before = System.nanoTime();
-                    queue.printAllProcesses(writer);
+                    queue.precedingProcessTime("P1");
                     break;
                 default:
                     System.err.println("Unknown function");
@@ -135,7 +134,7 @@ public class RunqueueTimeTester
         System.err.println("Commands:");
         System.err.println("RunqueueTimeTester generate <size> <output file>");
         System.err.println("RunqueueTimeTester time <implementation> <functions> <input file>");
-        System.err.println("<functions> = <enqueue | dequeue | print>");
+        System.err.println("<functions> = <enqueue | dequeue | preceding>");
         System.err.println("<implementation> = <array | linkedlist | tree>");
 
         System.exit(1);
