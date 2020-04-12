@@ -155,14 +155,14 @@ public class BinarySearchTreeRQ implements Runqueue {
         if (node == null) {
             sum = 0;
         } else if (node.getVt() < proc.getVt()) {
-            sum = totalProcessTime(node.getLeft()) + node.getVt() + precedingProcessTime(node.getRight(), proc);
+            sum = precedingProcessTime(node.getLeft(), proc) + node.getVt() + precedingProcessTime(node.getRight(), proc);
         } else if (node.getVt() > proc.getVt()) {
             sum = precedingProcessTime(node.getLeft(), proc);
         } else {
             if (node.getProcLabel().equals(proc.getProcLabel())) {
-                sum = totalProcessTime(node.getLeft());
+                sum = precedingProcessTime(node.getLeft(), proc);
             } else {
-                sum = totalProcessTime(node.getLeft()) + precedingProcessTime(node.getRight(), proc);
+                sum = precedingProcessTime(node.getLeft(), proc) + precedingProcessTime(node.getRight(), proc) + node.getVt();
             }
         }
         return sum;
@@ -210,7 +210,7 @@ public class BinarySearchTreeRQ implements Runqueue {
         if (node == null) {
             sum = 0;
         } else if (node.getVt() > proc.getVt()) {
-            sum = totalProcessTime(node.getRight()) + node.getVt() + succeedingProcessTime(node.getLeft(), proc);
+            sum = succeedingProcessTime(node.getRight(), proc) + node.getVt() + succeedingProcessTime(node.getLeft(), proc);
         } else if (node.getVt() < proc.getVt()) {
             sum = succeedingProcessTime(node.getRight(), proc);
         } else {
