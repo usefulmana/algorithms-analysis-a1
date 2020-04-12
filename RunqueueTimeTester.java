@@ -9,7 +9,7 @@ import java.util.Random;
 public class RunqueueTimeTester
 {
     private final static int MAX_VT = 100;
-    private final static int AVERAGE_AMOUNT = 3;
+    private final static int AVERAGE_AMOUNT = 10;
 
     // Generates a file with an certain amount of EN commands followed by
     // a unique identifier and random number between 1-MAX_VT
@@ -35,27 +35,27 @@ public class RunqueueTimeTester
         }
 
         long sum = 0;
+
         for(int i = 0; i < queues.length; i++)
         {
             long before = 0;
             Runqueue queue = queues[i];
-
             switch(function)
             {
                 case "enqueue":
                     Random gen = new Random(System.currentTimeMillis());
                     int vt = gen.nextInt(MAX_VT) + 1;
-
                     before = System.nanoTime();
-                    queue.enqueue("P10000", vt);
+                    queue.enqueue("TESTPROCESS", vt);
                     break;
                 case "dequeue":
                     before = System.nanoTime();
                     queue.dequeue();
                     break;
                 case "preceding":
+                    String randomLabel = getRandomLabelFromFile(filename);
                     before = System.nanoTime();
-                    queue.precedingProcessTime("P1");
+                    queue.precedingProcessTime(randomLabel);
                     break;
                 default:
                     System.err.println("Unknown function");
@@ -65,6 +65,64 @@ public class RunqueueTimeTester
             sum += after-before;
         }
         return sum/AVERAGE_AMOUNT;
+    }
+
+    private static String getRandomLabelFromFile(String filename)
+    {
+        int filesize = getFileSize(filename);
+
+        Random gen = new Random(System.currentTimeMillis());
+        int randomLine = gen.nextInt(filesize);
+        String label = "";
+        BufferedReader reader = null;
+        try
+        {
+            reader = new BufferedReader(new FileReader(filename));
+
+            for(int i = 0; i < randomLine; i++)
+            {
+                reader.readLine();
+            }
+            String line = reader.readLine();
+            String[] tokens = line.split(" ");
+            label = tokens[1];
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            System.err.println("File not found");
+            System.exit(1);
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        return label;
+    }
+
+    private static int getFileSize(String filename)
+    {
+        BufferedReader reader = null;
+        int numlines = 0;
+        try
+        {
+            reader = new BufferedReader(new FileReader(filename));
+            while (reader.readLine() != null)
+            {
+                numlines++;
+            }
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            System.err.println("File not found");
+            System.exit(1);
+        }
+        catch (IOException e)
+        {
+            System.err.println(e.getMessage());
+        }
+        return numlines;
     }
 
     // Returns a runqueue based on a file
