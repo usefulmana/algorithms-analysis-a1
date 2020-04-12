@@ -38,22 +38,29 @@ public class RunqueueTimeTester
 
         for(int i = 0; i < queues.length; i++)
         {
-            long before = 0;
+            long before = 0; // initial nano time before process is called
             Runqueue queue = queues[i];
             switch(function)
             {
                 case "enqueue":
+                    // Generates random vtime for test
                     Random gen = new Random(System.currentTimeMillis());
                     int vt = gen.nextInt(MAX_VT) + 1;
+
+                    // Enqueue test
                     before = System.nanoTime();
                     queue.enqueue("TESTPROCESS", vt);
                     break;
                 case "dequeue":
+                    // Dequeue test
                     before = System.nanoTime();
                     queue.dequeue();
                     break;
                 case "preceding":
+                    // Finds random label from file to test
                     String randomLabel = getRandomLabelFromFile(filename);
+
+                    // Preceding time test
                     before = System.nanoTime();
                     queue.precedingProcessTime(randomLabel);
                     break;
@@ -61,31 +68,39 @@ public class RunqueueTimeTester
                     System.err.println("Unknown function");
                     printCommands();
             }
-            long after = System.nanoTime();
-            sum += after-before;
+            long after = System.nanoTime(); // Nano time after process is finished
+            sum += after-before; // Total nano time process took
         }
+        // Return average
         return sum/AVERAGE_AMOUNT;
     }
 
+    // Returns a random label from a file of enqueue operations
     private static String getRandomLabelFromFile(String filename)
     {
+        // Chooses a random line
         int filesize = getFileSize(filename);
-
         Random gen = new Random(System.currentTimeMillis());
         int randomLine = gen.nextInt(filesize);
+
         String label = "";
         BufferedReader reader = null;
+
         try
         {
             reader = new BufferedReader(new FileReader(filename));
 
+            // Reads random line chosen
             for(int i = 0; i < randomLine; i++)
             {
                 reader.readLine();
             }
             String line = reader.readLine();
             String[] tokens = line.split(" ");
+
+            // Gets process label
             label = tokens[1];
+
             reader.close();
         }
         catch (FileNotFoundException ex)
@@ -100,6 +115,7 @@ public class RunqueueTimeTester
         return label;
     }
 
+    // Finds the amount of lines in a file
     private static int getFileSize(String filename)
     {
         BufferedReader reader = null;
@@ -126,7 +142,7 @@ public class RunqueueTimeTester
     }
 
     // Returns a runqueue based on a file
-    // File must only only EN commands only
+    // File must only only have EN operations only
     private static Runqueue createRunQueue(String filename, String impl)
     {
         Runqueue queue = null;
