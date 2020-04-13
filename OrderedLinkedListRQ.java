@@ -21,16 +21,16 @@ public class OrderedLinkedListRQ implements Runqueue {
         first = null;
     }  // end of OrderedLinkedList()
 
-    private int size(){
-        int sum = 0;
-        Node current = first;
+    // private int size(){
+    //     int sum = 0;
+    //     Node current = first;
 
-        while (current != null){
-           sum += 1;
-           current = current.nextNode;
-        }
-        return sum;
-    }
+    //     while (current != null){
+    //        sum += 1;
+    //        current = current.nextNode;
+    //     }
+    //     return sum;
+    // }
 
     @Override
     public void enqueue(String procLabel, int vt) {
