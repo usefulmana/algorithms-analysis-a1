@@ -252,7 +252,7 @@ public class RunqueueTimeTester
             String inputfile = args[3];
 
             long nanotime = getAverageTime(inputfile, func, impl);
-            System.out.println("Average time: " + (double)nanotime/1e+6 + "ms");
+            System.out.println("Average time: " + nanotime + "ns");
         }
         else
         {
