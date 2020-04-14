@@ -11,7 +11,10 @@ import java.lang.String;
  */
 public class OrderedLinkedListRQ implements Runqueue {
 
+    // Head node
     private Node first;
+
+    // Length of the linked list
     protected int length;
     
     /**
@@ -34,15 +37,21 @@ public class OrderedLinkedListRQ implements Runqueue {
 
     @Override
     public void enqueue(String procLabel, int vt) {
+        // Create new node from the given data
         Node newNode = new Node(new Proc(procLabel, vt));
+
+        // Initially, there is no previous node
         Node previous = null;
+        // Initially, the current node is the first node
         Node current = first;
 
+        // Loop through the linked list, and replace the current node if the any vt value is lower than the given vt
         while (current != null && vt >= current.getVt()){
             previous = current;
             current = current.getNextNode();
         }
 
+        // no previous node = empty linked list
         if (previous == null){
             newNode.nextNode = first;
             first = newNode;
@@ -52,16 +61,22 @@ public class OrderedLinkedListRQ implements Runqueue {
             previous.nextNode = newNode;
             newNode.nextNode = current;
         }
+        // increase length of the linked list after successfully enqueue
         length++;
     } // end of enqueue()
 
 
     @Override
     public String dequeue() {
+        // return null if the list is empty
         if (first == null) return null;
 
+        // save deleted process' label
         String result = first.getProcLabel();
+
+        // chance the first node to the next node
         first = first.getNextNode();
+        // decrease the length of the linkedlist
         length--;
         return result;// placeholder, modify this
     } // end of dequeue()
@@ -98,6 +113,7 @@ public class OrderedLinkedListRQ implements Runqueue {
         else {
             int index = findFirstIndexOfItem(procLabel);
             if (index == 0){
+                // if the target is the first item, use dequeue()
                 dequeue();
                 return true;
             }
@@ -144,11 +160,17 @@ public class OrderedLinkedListRQ implements Runqueue {
 
     @Override
     public int precedingProcessTime(String procLabel) {
+        // Set current node to the head node
         Node current = first;
         int sum = 0;
+
+        // Find target node
         Node target = findNodeByProcLabel(procLabel);
+
+        // Find target node index
         int targetIndex = findFirstIndexOfItem(procLabel);
         if (target != null){
+            // loop through the linked list
             for (int i = 0; i < targetIndex; i++) {
                 sum += current.getVt();
                 current = current.nextNode;
@@ -166,11 +188,13 @@ public class OrderedLinkedListRQ implements Runqueue {
         Node target = findNodeByProcLabel(procLabel);
         
         if (target != null){
+            // get sum of all node
             while(current != null){
                 sum += current.getVt();
                 current = current.nextNode;
             }
-    
+            
+            // result = sum of all node - target's vt - sum of all nodes bf target
             int finalSum = sum - target.getVt() - precedingProcessTime(procLabel);
     
             return finalSum;
@@ -191,7 +215,12 @@ public class OrderedLinkedListRQ implements Runqueue {
     } // end of printAllProcess()
 
     private class Node {
+        // Basic Node class
+
+        // Each Node contains 1 process
         protected Proc process;
+
+        // Pointer to next node
         protected Node nextNode;
 
         public Node(Proc proc){

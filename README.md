@@ -12,4 +12,26 @@ javac *.java
 ```
 java RunqueueTester <option> <input_file> <output_file>
 ```
-- There are 3 options: "tree", "array", "linkedlist"
+- There are 3 **options**: tree, array, linkedlist
+
+
+#### To run the data generator functionalities
+- Compile the program:
+```
+javac *.java
+``` 
+- To generate data:
+```
+java RunqueueTimeTester generate <size> <output file>
+```
+- To test the data:
+```
+java RunqueueTimeTester time <implementation> <function> <input_file>
+```
+where
+
+**\<functions\>**: enqueue, dequeue, preceding
+
+**\<implementation\>**: array, linkedlist, tree
+
+**\<input_file\>**: a file containing EN operations

@@ -2,8 +2,14 @@ import java.io.PrintWriter;
 import java.lang.String;
 
 public class OrderedArrayRQ implements Runqueue {
+
+    // Initiate empty proc array
     private Proc[] processes;
+
+    // Total number of processes in the given array
     private int totalElements;
+
+    // Capacity of the array
     private int capacity;
 
     public OrderedArrayRQ() {
@@ -20,14 +26,17 @@ public class OrderedArrayRQ implements Runqueue {
         }
     }
 
+    // Check if the array is full
     public boolean isFull() {
         return totalElements == capacity;
     }
 
+    // Check if the array is empty
     public boolean isEmpty() {
         return totalElements == 0;
     }
 
+    // Return the total number of elements in the given array
     public int size() {
         return totalElements;
     }
@@ -55,9 +64,13 @@ public class OrderedArrayRQ implements Runqueue {
 
     @Override
     public void enqueue(String procLabel, int vt) {
-        
+        // Create new proc from given data
         Proc newProc = new Proc(procLabel, vt);
+
+        // if the array is full, double the current capacity
         if (this.isFull()) doubleCapacity();
+
+        // if the array is empty, add the proc to the first position
         if (this.isEmpty()){
             processes[0] = newProc;
         }
@@ -65,6 +78,7 @@ public class OrderedArrayRQ implements Runqueue {
         {
             int i = this.size();
 
+            // loop through the array to continuously sort it
             for(;((i >= 1) && (processes[i-1].getVt() > newProc.getVt())); i--)
             {
                 processes[i] = processes[i-1];
@@ -73,16 +87,27 @@ public class OrderedArrayRQ implements Runqueue {
             processes[i] = newProc;
     
         }
+
+        // increase total number of elements
         totalElements++;
     } // end of enqueue()
 
     @Override
     public String dequeue() {
 
+        // save the to-be-deleted proc's label
         String result = processes[0].getProcLabel();
+
+        // delete
         processes[0] = null;
+
+        // initiate new array
         Proc[] newProcesses = new Proc[processes.length];
+
+        // decrease number of elements
         totalElements--;
+
+        // copy the content of the old the array to the new
         System.arraycopy(processes, 1, newProcesses, 0, this.totalElements);
         processes = newProcesses;
         return result;
@@ -96,6 +121,7 @@ public class OrderedArrayRQ implements Runqueue {
     } // end of findProcess()
 
     public int findProcessByLabel(String procLabel){
+        // find process label by looping the array
         for (int i = 0; i < processes.length; i++) {
             if (processes[i] == null) break;
             if (processes[i].getProcLabel().equals(procLabel)){
@@ -109,13 +135,17 @@ public class OrderedArrayRQ implements Runqueue {
     public boolean removeProcess(String procLabel) {
         int i = findProcessByLabel(procLabel);
         if (i != -1){
+            // Delete the process
             processes[i] = null;
             Proc[] newProcesses = new Proc[processes.length];
+            // Decrease the total number of elements
             totalElements--;
             if (i == 0){
+                // If the item to be removed is the first item, follow the dequeue() method
                 System.arraycopy(processes, 1, newProcesses, 0, processes.length - 1);
             }
             else{
+                // If not, split the array into two parts
                 System.arraycopy(processes, 0, newProcesses, 0, i);
                 System.arraycopy(processes, i + 1, newProcesses, i, processes.length - (i + 1));
             }
@@ -127,11 +157,12 @@ public class OrderedArrayRQ implements Runqueue {
 
     @Override
     public int precedingProcessTime(String procLabel) {
+        // find the index of the target process
         int i = findProcessByLabel(procLabel);
 
         if (i != -1){
             int sum = 0;
-
+            // loops sum
             for (int j = 0; j < i; j++) {
                 sum += processes[j].getVt();
             }
@@ -144,6 +175,7 @@ public class OrderedArrayRQ implements Runqueue {
 
     @Override
     public int succeedingProcessTime(String procLabel) {
+        // find the index of the target process
         int i = findProcessByLabel(procLabel);
 
         if (i != -1){
