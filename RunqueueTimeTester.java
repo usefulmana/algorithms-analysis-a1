@@ -32,7 +32,6 @@ public class RunqueueTimeTester
         for(int i = 0; i < queues.length; i++)
         {
             queues[i] = createRunQueue(filename, impl);
-            System.out.println(queues[i]);
         }
 
         long sum = 0;
